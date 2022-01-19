@@ -115,6 +115,9 @@ What patterns do you notice?
 
 **Response**:
 
+Movies in the FAIL class have a higher, median budget, domestic gross
+sales, and international gross than movies that pass.
+
 Next, we will take a look at how median budget and median gross vary by
 a more granular (detailed) indicator of the Bechdel test result (where
 `ok` = passes test, `dubious`, `men` = women only talk about men,
@@ -142,6 +145,11 @@ What patterns do you notice?
 
 **Response**:
 
+Movies with women who do not speak have higher sales and budgets than
+any other amount or kind of women speaking. The more women speak and the
+more complexity their character has the less the movie grosses in sales
+and has in budget.
+
 In order to evaluate how return on investment varies among movies that
 pass and fail the Bechdel test, we first create a new variable called
 `roi` as the ratio of the gross to budget. However, I missed part of the
@@ -151,13 +159,8 @@ below so that we obtain the correct `roi`.
 
 ``` r
 bechdel90_13 <- bechdel90_13 %>%
-  mutate(roi = (intgross_2013 + domgross_2013 - ___) / budget_2013)
+  mutate(roi = (intgross_2013 + domgross_2013 - budget_2013) / budget_2013)
 ```
-
-    ## Error: <text>:2:49: unexpected input
-    ## 1: bechdel90_13 <- bechdel90_13 %>%
-    ## 2:   mutate(roi = (intgross_2013 + domgross_2013 - _
-    ##                                                    ^
 
 Now we can see which movies have the highest return on investment.
 
@@ -167,10 +170,20 @@ bechdel90_13 %>%
   select(title, clean_test, binary, roi, budget_2013, intgross_2013)
 ```
 
-    ## Error: arrange() failed at implicit mutate() step. 
-    ## * Problem with `mutate()` column `..1`.
-    ## ℹ `..1 = roi`.
-    ## x object 'roi' not found
+    ## # A tibble: 1,615 x 6
+    ##    title                   clean_test binary   roi budget_2013 intgross_2013
+    ##    <chr>                   <ord>      <chr>  <dbl>       <int>         <dbl>
+    ##  1 Paranormal Activity     dubious    FAIL    670.      505595     218173082
+    ##  2 The Blair Witch Project ok         PASS    647.      839077     347238122
+    ##  3 El Mariachi             nowomen    FAIL    582.       11622       3390310
+    ##  4 Clerks.                 notalk     FAIL    257.       42435       6120440
+    ##  5 In the Company of Men   notalk     FAIL    230.       36281       4184879
+    ##  6 Napoleon Dynamite       notalk     FAIL    226.      493277      56878201
+    ##  7 Once                    men        FAIL    189.      173369      21956864
+    ##  8 The Devil Inside        ok         PASS    154.     1014639     103248087
+    ##  9 Primer                  notalk     FAIL    141.        8632        697797
+    ## 10 Fireproof               men        FAIL    133.      541128      36226687
+    ## # … with 1,605 more rows
 
 Below is a visualization of the return on investment by test result,
 however it’s difficult to see the distributions due to a few extreme
@@ -185,7 +198,7 @@ ggplot(data = bechdel90_13, mapping = aes(x = clean_test, y = roi, color = binar
        color = "Binary Bechdel result")
 ```
 
-    ## Error in FUN(X[[i]], ...): object 'roi' not found
+    ## Warning: Removed 15 rows containing non-finite values (stat_boxplot).
 
 ![](activity01-bechdel-test_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
@@ -203,12 +216,14 @@ ggplot(data = bechdel90_13, mapping = aes(x = clean_test, y = roi, color = binar
        color = "Binary Bechdel result")
 ```
 
-    ## Error in FUN(X[[i]], ...): object 'roi' not found
+    ## Warning: Removed 365 rows containing non-finite values (stat_boxplot).
 
 ![](activity01-bechdel-test_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 What patterns do you notice?
 
 **Response**:
+
+The more a movie passes the Bechdel test the greater the ROI.
 
 Go back to the `README` document
